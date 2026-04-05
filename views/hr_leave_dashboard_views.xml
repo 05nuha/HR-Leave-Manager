@@ -1,0 +1,145 @@
+<odoo>
+
+    <!-- action that opens the dashboard -->
+    <record id="hr_leave_dashboard_action" model="ir.actions.act_window">
+        <field name="name">Dashboard</field>
+        <field name="res_model">hr.leave.dashboard</field>
+        <field name="view_mode">form</field>
+        <field name="target">main</field>
+    </record>
+
+    <!-- dashboard form view — acts as an overview page -->
+    <record id="hr_leave_dashboard_view_form" model="ir.ui.view">
+        <field name="name">hr.leave.dashboard.form</field>
+        <field name="model">hr.leave.dashboard</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="false">
+                <sheet>
+                    <div class="o_hr_leave_dashboard">
+
+                        <!-- header -->
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <div>
+                                <h1 class="mb-0">
+                                    <i class="fa fa-calendar me-2 text-primary"/> Leave Manager
+                                </h1>
+                                <p class="text-muted mt-1 mb-0">Overview of all leave activity across your organisation</p>
+                            </div>
+                        </div>
+
+                        <hr class="mb-3"/>
+
+                        <!-- total requests banner -->
+                        <div class="alert alert-primary d-flex align-items-center mb-4 p-3">
+                            <i class="fa fa-file-text-o fa-2x me-3"/>
+                            <div>
+                                <span class="fs-4 fw-bold"><field name="total_requests" nolabel="1"/></span>
+                                <span class="fs-5 ms-1">Total Leave Requests</span>
+                                <div class="small text-muted mt-1">across all employees and leave types</div>
+                            </div>
+                        </div>
+
+                        <!-- section label -->
+                        <h6 class="text-uppercase text-muted mb-3" style="letter-spacing: 0.08em;">
+                            <i class="fa fa-bar-chart me-1"/> Requests by Status
+                        </h6>
+
+                        <!-- stat cards -->
+                        <div class="row g-3 mb-4">
+
+                            <div class="col-3">
+                                <button name="action_view_draft" type="object"
+                                        class="btn btn-secondary w-100 p-4 text-center text-white shadow-sm">
+                                    <i class="fa fa-pencil fa-2x mb-2 d-block"/>
+                                    <div class="fs-2 fw-bold"><field name="draft_count" nolabel="1"/></div>
+                                    <div class="small opacity-75">Draft</div>
+                                    <div class="progress mt-2" style="height:5px; background:rgba(255,255,255,0.3);">
+                                        <div class="progress-bar bg-white">
+                                            <field name="draft_percent" nolabel="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="small mt-1 opacity-75"><field name="draft_percent" nolabel="1"/>% of total</div>
+                                </button>
+                            </div>
+
+                            <div class="col-3">
+                                <button name="action_view_submitted" type="object"
+                                        class="btn btn-warning w-100 p-4 text-center text-dark shadow-sm">
+                                    <i class="fa fa-clock-o fa-2x mb-2 d-block"/>
+                                    <div class="fs-2 fw-bold"><field name="submitted_count" nolabel="1"/></div>
+                                    <div class="small opacity-75">Pending Approval</div>
+                                    <div class="progress mt-2" style="height:5px; background:rgba(0,0,0,0.15);">
+                                        <div class="progress-bar bg-dark">
+                                            <field name="submitted_percent" nolabel="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="small mt-1 opacity-75"><field name="submitted_percent" nolabel="1"/>% of total</div>
+                                </button>
+                            </div>
+
+                            <div class="col-3">
+                                <button name="action_view_approved" type="object"
+                                        class="btn btn-success w-100 p-4 text-center text-white shadow-sm">
+                                    <i class="fa fa-check-circle fa-2x mb-2 d-block"/>
+                                    <div class="fs-2 fw-bold"><field name="approved_count" nolabel="1"/></div>
+                                    <div class="small opacity-75">Approved</div>
+                                    <div class="progress mt-2" style="height:5px; background:rgba(255,255,255,0.3);">
+                                        <div class="progress-bar bg-white">
+                                            <field name="approved_percent" nolabel="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="small mt-1 opacity-75"><field name="approved_percent" nolabel="1"/>% of total</div>
+                                </button>
+                            </div>
+
+                            <div class="col-3">
+                                <button name="action_view_refused" type="object"
+                                        class="btn btn-danger w-100 p-4 text-center text-white shadow-sm">
+                                    <i class="fa fa-times-circle fa-2x mb-2 d-block"/>
+                                    <div class="fs-2 fw-bold"><field name="refused_count" nolabel="1"/></div>
+                                    <div class="small opacity-75">Refused</div>
+                                    <div class="progress mt-2" style="height:5px; background:rgba(255,255,255,0.3);">
+                                        <div class="progress-bar bg-white">
+                                            <field name="refused_percent" nolabel="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="small mt-1 opacity-75"><field name="refused_percent" nolabel="1"/>% of total</div>
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <!-- section label -->
+                        <h6 class="text-uppercase text-muted mb-3" style="letter-spacing: 0.08em;">
+                            <i class="fa fa-cog me-1"/> Configuration
+                        </h6>
+
+                        <div class="row g-3">
+
+                            <div class="col-3">
+                                <button name="action_view_allocations" type="object"
+                                        class="btn btn-info w-100 p-4 text-center text-white shadow-sm">
+                                    <i class="fa fa-users fa-2x mb-2 d-block"/>
+                                    <div class="fs-2 fw-bold"><field name="total_allocations" nolabel="1"/></div>
+                                    <div class="small opacity-75">Allocations</div>
+                                </button>
+                            </div>
+
+                            <div class="col-3">
+                                <button name="action_view_leave_types" type="object"
+                                        class="btn btn-primary w-100 p-4 text-center text-white shadow-sm">
+                                    <i class="fa fa-tags fa-2x mb-2 d-block"/>
+                                    <div class="fs-2 fw-bold"><field name="total_leave_types" nolabel="1"/></div>
+                                    <div class="small opacity-75">Leave Types</div>
+                                </button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

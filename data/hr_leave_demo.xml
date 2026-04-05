@@ -1,0 +1,179 @@
+<odoo noupdate="1">
+
+    <!-- ======================== LEAVE TYPES ======================== -->
+
+    <record id="leave_type_annual" model="hr.leave.type">
+        <field name="name">Annual Leave</field>
+        <field name="description">Yearly paid leave entitlement for all employees.</field>
+        <field name="max_days">30</field>
+        <field name="requires_approval">True</field>
+        <field name="color">10</field>
+    </record>
+
+    <record id="leave_type_sick" model="hr.leave.type">
+        <field name="name">Sick Leave</field>
+        <field name="description">Medical leave for illness or injury. No approval required.</field>
+        <field name="max_days">15</field>
+        <field name="requires_approval">False</field>
+        <field name="color">1</field>
+    </record>
+
+    <record id="leave_type_emergency" model="hr.leave.type">
+        <field name="name">Emergency Leave</field>
+        <field name="description">Short-term leave for unforeseen urgent circumstances.</field>
+        <field name="max_days">5</field>
+        <field name="requires_approval">True</field>
+        <field name="color">2</field>
+    </record>
+
+    <record id="leave_type_maternity" model="hr.leave.type">
+        <field name="name">Maternity / Paternity Leave</field>
+        <field name="description">Parental leave following the birth or adoption of a child.</field>
+        <field name="max_days">90</field>
+        <field name="requires_approval">True</field>
+        <field name="color">4</field>
+    </record>
+
+    <record id="leave_type_study" model="hr.leave.type">
+        <field name="name">Study Leave</field>
+        <field name="description">Leave granted for exams, certifications, or academic commitments.</field>
+        <field name="max_days">10</field>
+        <field name="requires_approval">True</field>
+        <field name="color">6</field>
+    </record>
+
+    <!-- ======================== ALLOCATIONS ======================== -->
+
+    <record id="allocation_admin_annual" model="hr.leave.allocation">
+        <field name="employee_id" ref="base.user_admin"/>
+        <field name="leave_type_id" ref="leave_type_annual"/>
+        <field name="number_of_days">30</field>
+    </record>
+
+    <record id="allocation_admin_sick" model="hr.leave.allocation">
+        <field name="employee_id" ref="base.user_admin"/>
+        <field name="leave_type_id" ref="leave_type_sick"/>
+        <field name="number_of_days">15</field>
+    </record>
+
+    <record id="allocation_admin_emergency" model="hr.leave.allocation">
+        <field name="employee_id" ref="base.user_admin"/>
+        <field name="leave_type_id" ref="leave_type_emergency"/>
+        <field name="number_of_days">5</field>
+    </record>
+
+    <record id="allocation_admin_maternity" model="hr.leave.allocation">
+        <field name="employee_id" ref="base.user_admin"/>
+        <field name="leave_type_id" ref="leave_type_maternity"/>
+        <field name="number_of_days">90</field>
+    </record>
+
+    <record id="allocation_admin_study" model="hr.leave.allocation">
+        <field name="employee_id" ref="base.user_admin"/>
+        <field name="leave_type_id" ref="leave_type_study"/>
+        <field name="number_of_days">10</field>
+    </record>
+
+    <!-- ======================== LEAVE REQUESTS ======================== -->
+    <!-- allocation_id is intentionally omitted to avoid constraint timing issues during install -->
+
+    <record id="request_annual_approved" model="hr.leave.request">
+        <field name="employee_id" ref="base.user_admin"/>
+        <field name="leave_type_id" ref="leave_type_annual"/>
+        <field name="date_from">2026-04-07</field>
+        <field name="date_to">2026-04-11</field>
+        <field name="reason">Family vacation trip.</field>
+        <field name="state">approved</field>
+    </record>
+
+    <record id="request_annual_submitted" model="hr.leave.request">
+        <field name="employee_id" ref="base.user_admin"/>
+        <field name="leave_type_id" ref="leave_type_annual"/>
+        <field name="date_from">2026-05-01</field>
+        <field name="date_to">2026-05-05</field>
+        <field name="reason">Attending a conference abroad.</field>
+        <field name="state">submitted</field>
+    </record>
+
+    <record id="request_annual_draft" model="hr.leave.request">
+        <field name="employee_id" ref="base.user_admin"/>
+        <field name="leave_type_id" ref="leave_type_annual"/>
+        <field name="date_from">2026-06-15</field>
+        <field name="date_to">2026-06-19</field>
+        <field name="reason">Summer break with family.</field>
+        <field name="state">draft</field>
+    </record>
+
+    <record id="request_annual_draft_2" model="hr.leave.request">
+        <field name="employee_id" ref="base.user_admin"/>
+        <field name="leave_type_id" ref="leave_type_annual"/>
+        <field name="date_from">2026-08-10</field>
+        <field name="date_to">2026-08-14</field>
+        <field name="reason">Travel to visit relatives in Amman.</field>
+        <field name="state">draft</field>
+    </record>
+
+    <record id="request_sick_approved" model="hr.leave.request">
+        <field name="employee_id" ref="base.user_admin"/>
+        <field name="leave_type_id" ref="leave_type_sick"/>
+        <field name="date_from">2026-04-14</field>
+        <field name="date_to">2026-04-15</field>
+        <field name="reason">Flu and fever.</field>
+        <field name="state">approved</field>
+    </record>
+
+    <record id="request_sick_approved_2" model="hr.leave.request">
+        <field name="employee_id" ref="base.user_admin"/>
+        <field name="leave_type_id" ref="leave_type_sick"/>
+        <field name="date_from">2026-05-20</field>
+        <field name="date_to">2026-05-21</field>
+        <field name="reason">Severe back pain.</field>
+        <field name="state">approved</field>
+    </record>
+
+    <record id="request_emergency_refused" model="hr.leave.request">
+        <field name="employee_id" ref="base.user_admin"/>
+        <field name="leave_type_id" ref="leave_type_emergency"/>
+        <field name="date_from">2026-04-20</field>
+        <field name="date_to">2026-04-20</field>
+        <field name="reason">Personal matters.</field>
+        <field name="state">refused</field>
+    </record>
+
+    <record id="request_emergency_submitted" model="hr.leave.request">
+        <field name="employee_id" ref="base.user_admin"/>
+        <field name="leave_type_id" ref="leave_type_emergency"/>
+        <field name="date_from">2026-05-28</field>
+        <field name="date_to">2026-05-29</field>
+        <field name="reason">Family emergency requiring immediate travel.</field>
+        <field name="state">submitted</field>
+    </record>
+
+    <record id="request_study_submitted" model="hr.leave.request">
+        <field name="employee_id" ref="base.user_admin"/>
+        <field name="leave_type_id" ref="leave_type_study"/>
+        <field name="date_from">2026-06-01</field>
+        <field name="date_to">2026-06-03</field>
+        <field name="reason">Final exams for professional certification.</field>
+        <field name="state">submitted</field>
+    </record>
+
+    <record id="request_study_draft" model="hr.leave.request">
+        <field name="employee_id" ref="base.user_admin"/>
+        <field name="leave_type_id" ref="leave_type_study"/>
+        <field name="date_from">2026-09-10</field>
+        <field name="date_to">2026-09-12</field>
+        <field name="reason">Odoo developer certification exam.</field>
+        <field name="state">draft</field>
+    </record>
+
+    <record id="request_maternity_approved" model="hr.leave.request">
+        <field name="employee_id" ref="base.user_admin"/>
+        <field name="leave_type_id" ref="leave_type_maternity"/>
+        <field name="date_from">2026-10-01</field>
+        <field name="date_to">2026-12-29</field>
+        <field name="reason">Paternity leave following birth of child.</field>
+        <field name="state">approved</field>
+    </record>
+
+</odoo>

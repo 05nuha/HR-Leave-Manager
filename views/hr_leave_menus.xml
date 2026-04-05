@@ -1,0 +1,40 @@
+<odoo>
+
+    <!-- root menu item that appears in the top navigation bar -->
+    <menuitem id="hr_leave_menu_root"
+              name="Leave Manager"
+              sequence="10"/>
+
+    <!-- dashboard is the first thing users see when opening Leave Manager -->
+    <menuitem id="hr_leave_menu_dashboard"
+              name="Dashboard"
+              parent="hr_leave_menu_root"
+              action="hr_leave_dashboard_action"
+              sequence="0"/>
+
+    <!-- main nav items under Leave Manager -->
+    <menuitem id="hr_leave_menu_requests"
+              name="Leave Requests"
+              parent="hr_leave_menu_root"
+              action="hr_leave_request_action"
+              sequence="1"/>
+
+    <menuitem id="hr_leave_menu_allocations"
+              name="Allocations"
+              parent="hr_leave_menu_root"
+              action="hr_leave_allocation_action"
+              sequence="2"/>
+
+    <!-- configuration sub-menu keeps leave types separate from day-to-day usage -->
+    <menuitem id="hr_leave_menu_config"
+              name="Configuration"
+              parent="hr_leave_menu_root"
+              sequence="3"/>
+
+    <menuitem id="hr_leave_menu_types"
+              name="Leave Types"
+              parent="hr_leave_menu_config"
+              action="hr_leave_type_action"
+              sequence="1"/>
+
+</odoo>

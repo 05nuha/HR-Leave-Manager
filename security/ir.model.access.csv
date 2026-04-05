@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_leave_type,access.hr.leave.type,model_hr_leave_type,,1,1,1,1
+access_hr_leave_allocation,access.hr.leave.allocation,model_hr_leave_allocation,,1,1,1,1
+access_hr_leave_request,access.hr.leave.request,model_hr_leave_request,,1,1,1,1
+access_hr_leave_dashboard,access.hr.leave.dashboard,model_hr_leave_dashboard,,1,1,1,1

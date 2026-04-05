@@ -1,0 +1,75 @@
+<odoo>
+
+    <record id="hr_leave_allocation_action" model="ir.actions.act_window">
+        <field name="name">Leave Allocations</field>
+        <field name="res_model">hr.leave.allocation</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+
+    <!-- list view: green rows = days remaining, red rows = fully used up -->
+    <record id="hr_leave_allocation_view_list" model="ir.ui.view">
+        <field name="name">hr.leave.allocation.list</field>
+        <field name="model">hr.leave.allocation</field>
+        <field name="arch" type="xml">
+            <list decoration-success="remaining_days &gt; 0" decoration-danger="remaining_days == 0">
+                <field name="employee_id"/>
+                <field name="leave_type_id"/>
+                <field name="number_of_days" string="Allocated"/>
+                <field name="remaining_days" string="Remaining"/>
+                <field name="request_count" string="Requests"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- form view: stat button links to requests, inline list shows request history -->
+    <record id="hr_leave_allocation_view_form" model="ir.ui.view">
+        <field name="name">hr.leave.allocation.form</field>
+        <field name="model">hr.leave.allocation</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <!-- stat button opens related leave requests filtered to this allocation -->
+                    <div name="button_box" class="oe_button_box">
+                        <button name="action_view_requests" type="object"
+                                class="oe_stat_button" icon="fa-file-text">
+                            <field name="request_count" widget="statinfo" string="Requests"/>
+                        </button>
+                    </div>
+                    <!-- computed name: "Employee — Leave Type" -->
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group string="Allocation Details">
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="leave_type_id"/>
+                        </group>
+                        <group>
+                            <field name="number_of_days"/>
+                            <!-- remaining_days is computed from approved requests, so it's readonly -->
+                            <field name="remaining_days" readonly="1"/>
+                        </group>
+                    </group>
+                    <!-- inline list shows all requests tied to this allocation -->
+                    <group string="Leave Requests">
+                        <field name="request_ids" nolabel="1">
+                            <list decoration-success="state == 'approved'"
+                                  decoration-danger="state == 'refused'"
+                                  decoration-muted="state == 'refused'">
+                                <field name="date_from"/>
+                                <field name="date_to"/>
+                                <field name="number_of_days" string="Days"/>
+                                <field name="state" widget="badge"
+                                       decoration-success="state == 'approved'"
+                                       decoration-warning="state == 'submitted'"
+                                       decoration-danger="state == 'refused'"/>
+                            </list>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

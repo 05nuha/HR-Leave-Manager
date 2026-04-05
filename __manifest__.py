@@ -1,0 +1,22 @@
+{
+    'name': 'HR Leave Manager',
+    'version': '1.0',
+    'category': 'Human Resources',
+    'summary': 'Manage employee leave requests, allocations, and approvals',
+    'author': 'Nuha Aburamadan',
+    'license': 'LGPL-3',
+    'depends': ['base', 'mail'],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/hr_leave_dashboard_views.xml',
+        'views/hr_leave_type_views.xml',
+        'views/hr_leave_allocation_views.xml',
+        'views/hr_leave_request_views.xml',
+        'views/report_hr_leave_request.xml',
+        'views/hr_leave_menus.xml',
+        'data/hr_leave_cron.xml',
+        'data/hr_leave_demo.xml',
+    ],
+    'installable': True,
+    'application': True,
+}

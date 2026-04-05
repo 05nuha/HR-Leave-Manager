@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+        body { font-family: Arial, sans-serif; color: #333; margin: 0; padding: 0; }
+        .header { background: linear-gradient(135deg, #4C6EF5, #364FC7); color: white; padding: 40px 32px; }
+        .header h1 { margin: 0 0 8px; font-size: 28px; }
+        .header p { margin: 0; opacity: 0.85; font-size: 15px; }
+        .content { padding: 32px; }
+        .features { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px; }
+        .feature { flex: 1 1 260px; background: #f8f9fa; border-left: 4px solid #4C6EF5; padding: 16px 20px; border-radius: 4px; }
+        .feature h3 { margin: 0 0 6px; font-size: 15px; color: #4C6EF5; }
+        .feature p { margin: 0; font-size: 13px; color: #555; line-height: 1.5; }
+        h2 { font-size: 20px; color: #364FC7; border-bottom: 2px solid #e9ecef; padding-bottom: 8px; margin-top: 32px; }
+        .badge { display: inline-block; background: #4C6EF5; color: white; font-size: 11px; padding: 2px 10px; border-radius: 12px; margin: 2px; }
+        .screenshots p { color: #888; font-style: italic; font-size: 13px; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>HR Leave Manager</h1>
+    <p>A complete leave management solution for HR teams — built for Odoo 19</p>
+</div>
+
+<div class="content">
+
+    <h2>Overview</h2>
+    <p>
+        HR Leave Manager gives your organisation full control over employee leave — from initial
+        request to final approval. It includes a real-time dashboard, multi-view analytics,
+        automated workflows, and printable leave documents.
+    </p>
+
+    <h2>Key Features</h2>
+    <div class="features">
+        <div class="feature">
+            <h3>Live Dashboard</h3>
+            <p>At-a-glance overview of all leave activity — draft, pending, approved, and refused — with clickable stat cards and percentage breakdowns.</p>
+        </div>
+        <div class="feature">
+            <h3>Leave Requests</h3>
+            <p>Full approval workflow with Submit, Approve, and Refuse actions. Tracks state changes via the chatter with automatic email notifications.</p>
+        </div>
+        <div class="feature">
+            <h3>Allocations</h3>
+            <p>Manage how many days each employee is entitled to per leave type, with remaining days calculated in real time.</p>
+        </div>
+        <div class="feature">
+            <h3>Leave Types</h3>
+            <p>Configure leave types with colour coding, max days, and approval requirements. Annual, Sick, Emergency, Maternity, and Study leave included out of the box.</p>
+        </div>
+        <div class="feature">
+            <h3>Calendar View</h3>
+            <p>Visualise all leave requests on a monthly calendar, colour-coded by leave type, for easy scheduling and conflict detection.</p>
+        </div>
+        <div class="feature">
+            <h3>Graph &amp; Pivot Analysis</h3>
+            <p>Bar chart and pivot table views let managers analyse leave trends across employees, leave types, and approval states.</p>
+        </div>
+        <div class="feature">
+            <h3>Overlap Validation</h3>
+            <p>Automatically prevents employees from submitting overlapping leave requests for the same period.</p>
+        </div>
+        <div class="feature">
+            <h3>PDF Reports</h3>
+            <p>Print professional leave request documents with employee details, leave period, reason, and signature fields — ready for HR filing.</p>
+        </div>
+        <div class="feature">
+            <h3>Automated Cron Job</h3>
+            <p>A daily scheduled action automatically refuses any leave requests whose end date has passed and are still pending.</p>
+        </div>
+    </div>
+
+    <h2>Technical</h2>
+    <p>
+        <span class="badge">Odoo 19</span>
+        <span class="badge">Python</span>
+        <span class="badge">QWeb PDF</span>
+        <span class="badge">mail.thread</span>
+        <span class="badge">mail.activity.mixin</span>
+        <span class="badge">TransientModel Dashboard</span>
+        <span class="badge">ir.cron</span>
+    </p>
+
+    <h2>Module Info</h2>
+    <p>Author: Nuha Aburamadan &nbsp;|&nbsp; Category: Human Resources &nbsp;|&nbsp; Version: 1.0 &nbsp;|&nbsp; License: LGPL-3</p>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(\"C:/Users/Fahmi-Aburamadan/Desktop/Odoo_Software/PostgreSQL/bin/psql.exe\" -U openpg -h localhost -p 5432 -c \"\\\\l\")"
+    ]
+  }
+}

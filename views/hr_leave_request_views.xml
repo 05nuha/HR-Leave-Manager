@@ -1,0 +1,163 @@
+<odoo>
+
+    <!-- action includes all view modes -->
+    <record id="hr_leave_request_action" model="ir.actions.act_window">
+        <field name="name">Leave Requests</field>
+        <field name="res_model">hr.leave.request</field>
+        <field name="view_mode">list,kanban,calendar,form,graph,pivot</field>
+    </record>
+
+    <!-- calendar view: leave requests shown as colored date-range events -->
+    <record id="hr_leave_request_view_calendar" model="ir.ui.view">
+        <field name="name">hr.leave.request.calendar</field>
+        <field name="model">hr.leave.request</field>
+        <field name="arch" type="xml">
+            <calendar string="Leave Calendar"
+                      date_start="date_from"
+                      date_stop="date_to"
+                      color="leave_type_id"
+                      quick_create="false"
+                      mode="month">
+                <field name="employee_id"/>
+                <field name="leave_type_id"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- graph view: bar chart of days requested per leave type, grouped by state -->
+    <record id="hr_leave_request_view_graph" model="ir.ui.view">
+        <field name="name">hr.leave.request.graph</field>
+        <field name="model">hr.leave.request</field>
+        <field name="arch" type="xml">
+            <graph string="Leave Requests Analysis" type="bar">
+                <field name="leave_type_id" type="row"/>
+                <field name="state" type="col"/>
+                <field name="number_of_days" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- pivot view: cross-analysis of employees vs leave types showing total days -->
+    <record id="hr_leave_request_view_pivot" model="ir.ui.view">
+        <field name="name">hr.leave.request.pivot</field>
+        <field name="model">hr.leave.request</field>
+        <field name="arch" type="xml">
+            <pivot string="Leave Requests Analysis">
+                <field name="employee_id" type="row"/>
+                <field name="leave_type_id" type="col"/>
+                <field name="number_of_days" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- kanban view grouped by state so you can see all stages at a glance -->
+    <record id="hr_leave_request_view_kanban" model="ir.ui.view">
+        <field name="name">hr.leave.request.kanban</field>
+        <field name="model">hr.leave.request</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_small_column">
+                <field name="state"/>
+                <field name="employee_id"/>
+                <field name="leave_type_id"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="number_of_days"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="p-2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <strong><field name="employee_id"/></strong>
+                                <span t-attf-class="badge rounded-pill #{
+                                    record.state.raw_value == 'approved' ? 'bg-success' :
+                                    record.state.raw_value == 'refused' ? 'bg-danger' :
+                                    record.state.raw_value == 'submitted' ? 'bg-warning text-dark' : 'bg-secondary'
+                                }">
+                                    <field name="state"/>
+                                </span>
+                            </div>
+                            <div class="mt-1 text-muted">
+                                <i class="fa fa-tag"/> <field name="leave_type_id"/>
+                            </div>
+                            <hr class="my-1"/>
+                            <div class="d-flex justify-content-between small">
+                                <span><i class="fa fa-calendar"/> <field name="date_from"/></span>
+                                <span>→ <field name="date_to"/></span>
+                            </div>
+                            <div class="text-center mt-1">
+                                <span class="badge bg-info rounded-pill">
+                                    <i class="fa fa-clock-o"/> <field name="number_of_days"/> day(s)
+                                </span>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- list view: color-coded rows + badge widget on the state column -->
+    <record id="hr_leave_request_view_list" model="ir.ui.view">
+        <field name="name">hr.leave.request.list</field>
+        <field name="model">hr.leave.request</field>
+        <field name="arch" type="xml">
+            <list decoration-success="state == 'approved'"
+                  decoration-danger="state == 'refused'"
+                  decoration-muted="state == 'refused'">
+                <field name="employee_id"/>
+                <field name="leave_type_id"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="number_of_days" string="Days"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'approved'"
+                       decoration-warning="state == 'submitted'"
+                       decoration-danger="state == 'refused'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- form view: statusbar + action buttons drive the approval workflow -->
+    <record id="hr_leave_request_view_form" model="ir.ui.view">
+        <field name="name">hr.leave.request.form</field>
+        <field name="model">hr.leave.request</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <header>
+                        <button name="action_submit" type="object" string="Submit"
+                                class="btn-primary" invisible="state != 'draft'"/>
+                        <button name="action_approve" type="object" string="Approve"
+                                class="btn-success" invisible="state != 'submitted'"/>
+                        <button name="action_refuse" type="object" string="Refuse"
+                                class="btn-danger" invisible="state in ('draft', 'refused')"/>
+                        <button name="action_reset_draft" type="object" string="Reset to Draft"
+                                invisible="state not in ('refused', 'submitted')"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,submitted,approved"/>
+                    </header>
+                    <group string="Leave Request Details">
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="leave_type_id"/>
+                            <field name="allocation_id"/>
+                            <field name="remaining_days_in_allocation"
+                                   readonly="1"
+                                   invisible="not allocation_id"/>
+                        </group>
+                        <group>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="number_of_days" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Reason">
+                        <field name="reason" placeholder="Provide reason for leave request..." nolabel="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,156 @@
+<odoo>
+
+    <!-- report action — binds to hr.leave.request so it appears in the Print menu -->
+    <record id="action_report_hr_leave_request" model="ir.actions.report">
+        <field name="name">Leave Request</field>
+        <field name="model">hr.leave.request</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hr_leave_manager.report_hr_leave_request_doc</field>
+        <field name="report_file">hr_leave_manager.report_hr_leave_request_doc</field>
+        <field name="binding_model_id" ref="model_hr_leave_request"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- QWeb PDF template -->
+    <template id="report_hr_leave_request_doc">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+
+                        <!-- title -->
+                        <div class="row mb-4">
+                            <div class="col-12 text-center">
+                                <h2 class="text-primary" style="border-bottom: 2px solid #4C6EF5; padding-bottom: 8px;">
+                                    Leave Request
+                                </h2>
+                                <p class="text-muted">Official Leave Request Document</p>
+                            </div>
+                        </div>
+
+                        <!-- status badge -->
+                        <div class="row mb-4">
+                            <div class="col-12 text-center">
+                                <span t-attf-style="
+                                    display: inline-block;
+                                    padding: 6px 24px;
+                                    border-radius: 20px;
+                                    font-size: 14px;
+                                    font-weight: bold;
+                                    text-transform: uppercase;
+                                    letter-spacing: 1px;
+                                    background-color: #{
+                                        doc.state == 'approved' and '#28a745' or
+                                        doc.state == 'refused' and '#dc3545' or
+                                        doc.state == 'submitted' and '#ffc107' or '#6c757d'
+                                    };
+                                    color: #{doc.state == 'submitted' and '#000' or '#fff'};
+                                ">
+                                    <t t-esc="dict(draft='Draft', submitted='Pending Approval', approved='Approved', refused='Refused').get(doc.state, doc.state)"/>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- employee and leave details -->
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <table class="table table-bordered" style="font-size: 13px;">
+                                    <thead>
+                                        <tr style="background-color: #4C6EF5; color: white;">
+                                            <th colspan="2">Employee Information</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="width:45%; color:#6c757d;">Employee</td>
+                                            <td><strong><t t-esc="doc.employee_id.name"/></strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color:#6c757d;">Leave Type</td>
+                                            <td><t t-esc="doc.leave_type_id.name"/></td>
+                                        </tr>
+                                        <t t-if="doc.allocation_id">
+                                            <tr>
+                                                <td style="color:#6c757d;">Allocation</td>
+                                                <td><t t-esc="doc.allocation_id.name"/></td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-6">
+                                <table class="table table-bordered" style="font-size: 13px;">
+                                    <thead>
+                                        <tr style="background-color: #4C6EF5; color: white;">
+                                            <th colspan="2">Leave Period</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="width:45%; color:#6c757d;">From</td>
+                                            <td><strong><t t-esc="doc.date_from"/></strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color:#6c757d;">To</td>
+                                            <td><strong><t t-esc="doc.date_to"/></strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color:#6c757d;">Total Days</td>
+                                            <td>
+                                                <strong><t t-esc="doc.number_of_days"/> day(s)</strong>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- reason -->
+                        <div class="row mb-4" t-if="doc.reason">
+                            <div class="col-12">
+                                <table class="table table-bordered" style="font-size: 13px;">
+                                    <thead>
+                                        <tr style="background-color: #4C6EF5; color: white;">
+                                            <th>Reason for Leave</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="min-height: 60px;"><t t-esc="doc.reason"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- signature section -->
+                        <div class="row mt-5">
+                            <div class="col-4 text-center">
+                                <div style="border-top: 1px solid #333; padding-top: 6px; margin-top: 40px;">
+                                    <p class="text-muted small">Employee Signature</p>
+                                </div>
+                            </div>
+                            <div class="col-4"/>
+                            <div class="col-4 text-center">
+                                <div style="border-top: 1px solid #333; padding-top: 6px; margin-top: 40px;">
+                                    <p class="text-muted small">Manager Signature</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- footer note -->
+                        <div class="row mt-4">
+                            <div class="col-12 text-center">
+                                <p class="text-muted" style="font-size: 11px;">
+                                    This document was generated by the HR Leave Manager system.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

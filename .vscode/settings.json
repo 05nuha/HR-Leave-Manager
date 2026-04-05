@@ -1,0 +1,8 @@
+{
+    "python.pythonPath": "C:\\Users\\Fahmi-Aburamadan\\Desktop\\Odoo_Software\\python\\python.exe",
+    "python.defaultInterpreterPath": "C:\\Users\\Fahmi-Aburamadan\\Desktop\\Odoo_Software\\python\\python.exe",
+    "python-envs.defaultEnvManager": "ms-python.python:system",
+    "python.analysis.extraPaths": [
+        "C:\\Users\\Fahmi-Aburamadan\\Desktop\\Odoo_Software\\server"
+    ]
+}
