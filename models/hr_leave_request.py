@@ -6,9 +6,12 @@ from odoo.tools import float_is_zero, float_compare
 class HrLeaveRequest(models.Model):
     _name = "hr.leave.request"
     _description = "Leave Request"
+    _rec_name = "display_name_computed"
     # mail.thread enables the chatter and message log on the form
     # mail.activity.mixin adds the activity scheduling feature
     _inherit = ['mail.thread', 'mail.activity.mixin']
+
+    display_name_computed = fields.Char(string="Name", compute="_compute_display_name_computed", store=True)
 
     employee_id = fields.Many2one("res.users", string="Employee", required=True, default=lambda self: self.env.user, tracking=True)
     leave_type_id = fields.Many2one("hr.leave.type", string="Leave Type", required=True, tracking=True)
@@ -20,6 +23,9 @@ class HrLeaveRequest(models.Model):
     # computed and stored so we can filter/sort by it in list view
     number_of_days = fields.Integer(string="Duration (days)", compute="_compute_number_of_days", store=True)
     reason = fields.Text(string="Reason")
+    sick_certificate = fields.Binary(string="Sick Leave Certificate", attachment=True)
+    sick_certificate_filename = fields.Char(string="Certificate Filename")
+    is_sick_leave = fields.Boolean(string="Is Sick Leave", compute="_compute_is_sick_leave")
     # shows remaining days from the linked allocation directly on the form
     remaining_days_in_allocation = fields.Integer(
         string="Days Available",
@@ -32,6 +38,20 @@ class HrLeaveRequest(models.Model):
         string="Status",
         tracking=True,  # logs every state change in the chatter
     )
+
+    @api.depends("leave_type_id")
+    def _compute_is_sick_leave(self):
+        for record in self:
+            record.is_sick_leave = record.leave_type_id and \
+                "sick" in record.leave_type_id.name.lower()
+
+    @api.depends("employee_id", "leave_type_id", "date_from")
+    def _compute_display_name_computed(self):
+        for record in self:
+            employee = record.employee_id.name or "Employee"
+            leave_type = record.leave_type_id.name or "Leave"
+            date = record.date_from or ""
+            record.display_name_computed = f"{employee} — {leave_type} ({date})"
 
     @api.depends("date_from", "date_to")
     def _compute_number_of_days(self):
@@ -92,6 +112,8 @@ class HrLeaveRequest(models.Model):
         for record in self:
             if record.state != "draft":
                 raise UserError("Only draft requests can be submitted.")
+            if record.is_sick_leave and not record.sick_certificate:
+                raise ValidationError("A sick leave certificate must be uploaded before submitting a Sick Leave request.")
             record.state = "submitted"
             record.message_post(
                 body=(

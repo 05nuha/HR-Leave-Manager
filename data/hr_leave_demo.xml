@@ -12,9 +12,9 @@
 
     <record id="leave_type_sick" model="hr.leave.type">
         <field name="name">Sick Leave</field>
-        <field name="description">Medical leave for illness or injury. No approval required.</field>
+        <field name="description">Medical leave for illness or injury. Certificate required.</field>
         <field name="max_days">15</field>
-        <field name="requires_approval">False</field>
+        <field name="requires_approval">True</field>
         <field name="color">1</field>
     </record>
 
